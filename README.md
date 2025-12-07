@@ -41,7 +41,7 @@ venv\Scripts\activate           # Windows
 
 pip install -r requirements.txt
 ```
-## Run the script - Ejecuta el script
+## Run the script 
 
 ```bash
 python main.py
