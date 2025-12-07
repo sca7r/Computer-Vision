@@ -5,7 +5,7 @@ A real-time computer vision system that tracks hands and facial features while d
 ![Python](https://img.shields.io/badge/python-3.8+-blue.svg)
 ![OpenCV](https://img.shields.io/badge/OpenCV-4.x-green.svg)
 ![MediaPipe](https://img.shields.io/badge/MediaPipe-latest-orange.svg)
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
+
 
 ## Features
 
