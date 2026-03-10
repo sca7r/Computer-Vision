@@ -1,48 +1,178 @@
-# Hand and Face Tracking with Sleep Detection
+# Hand and face Monitoring System
 
-A real-time computer vision system that tracks hands and facial features while detecting sleep states using Eye Aspect Ratio (EAR) analysis. Built with Python, OpenCV, and MediaPipe.
+> Real-time drowsiness detection with hand & face tracking, audio alarm, email/SMS alerts, and a live web dashboard, built with Python, MediaPipe Tasks API, and FastAPI.
 
 ![Python](https://img.shields.io/badge/python-3.8+-blue.svg)
+![MediaPipe](https://img.shields.io/badge/MediaPipe-0.10+-orange.svg)
+![FastAPI](https://img.shields.io/badge/FastAPI-latest-009688.svg)
 ![OpenCV](https://img.shields.io/badge/OpenCV-4.x-green.svg)
-![MediaPipe](https://img.shields.io/badge/MediaPipe-latest-orange.svg)
+![License](https://img.shields.io/badge/license-MIT-lightgrey.svg)
 
+---
 
-## Features
+##  Overview
 
--  **Real-time Hand Tracking**: Detects and tracks up to 2 hands with 21 landmark points per hand
--  **Facial Landmark Detection**: Tracks 478 facial landmarks using MediaPipe Face Mesh
--  **Sleep/Awake Detection**: Monitors eye closure using Eye Aspect Ratio (EAR) algorithm
--  **Live Statistics**: Displays real-time EAR values, status, and blink counter
--  **Webcam Support**: Works with standard webcams and supports multiple camera indices
+A production-grade monitoring system that uses computer vision to detect drowsiness in real time. It tracks facial landmarks and hand positions via webcam, calculates the **Eye Aspect Ratio (EAR)** to determine if a person is falling asleep, and fires multi-channel alerts, all while streaming a live feed to a web dashboard.
 
-## Demo
+---
 
-The system provides:
-- Green dots and connecting lines for hand landmarks
-- Face mesh contours showing key facial features
-- Real-time EAR (Eye Aspect Ratio) measurement
-- Status indicator: AWAKE (green) or SLEEPING (red)
+##  Features
 
+| Feature | Description |
+|---|---|
+|  **Sleep Detection** | Eye Aspect Ratio (EAR) algorithm with configurable threshold and frame window |
+|  **Hand Tracking** | 21-landmark hand tracking for up to 2 hands simultaneously |
+|  **Multi-Person** | Independent sleep state tracked per face (up to 10 simultaneous) |
+|  **Audio Alarm** | Procedurally generated beep alarm with cooldown, runs in background thread |
+|  **Email Alerts** | HTML email sent via SMTP (Gmail-ready) when sleeping is detected |
+|  **SMS Alerts** | Twilio SMS notification with configurable recipients |
+|  **Live Dashboard** | FastAPI + MJPEG stream with real-time stats, per-face table, and alert log |
+|  **Config File** | All settings in a single `config.yaml` — no code changes needed |
 
-## Installation
+---
 
-### Prerequisites
+##  Dashboard Preview
 
-- Python 3.8 or higher
-- Webcam/Camera
-- Linux/Windows/macOS
+The web dashboard runs at `http://localhost:8000` and shows:
+- **Live camera feed** via MJPEG stream
+- **FPS, face count, sleeping count** stat cards
+- **Per-face table** with EAR value, AWAKE/SLEEPING badge, and blink(times asleep) counter
+- **Alert log** with timestamps for every sleep, email, and SMS event
 
-### Setup
+---
 
+## How It Works
+
+### Eye Aspect Ratio (EAR)
+```
+EAR = (|p2−p6| + |p3−p5|) / (2 × |p1−p4|)
+```
+When EAR drops below `ear_threshold` for `consec_frames` consecutive frames, the person is flagged as **SLEEPING** and all configured alerts fire.
+
+### Architecture
+```
+Webcam
+  └── cv2.VideoCapture
+        └── mp.Image
+              ├── FaceLandmarker (thread 1) ──► EAR calc ──► PersonState ──► Alerts
+              └── HandLandmarker (thread 2) ──► Draw landmarks
+
+SharedState (thread-safe)
+  ├── JPEG frame  ──► FastAPI /stream  ──► Browser MJPEG
+  ├── Stats       ──► FastAPI /stats   ──► Dashboard cards
+  └── Alert log   ──► FastAPI /alerts  ──► Alert log table
+```
+
+---
+
+## Project Structure
+
+```
+hand and face tracking with leep awake detection/
+│
+├── main.py              # Entry point — detection loop
+├── api.py               # FastAPI server + web dashboard
+├── alerts.py            # Email and SMS alerters
+├── state.py             # Thread-safe shared state (detection ↔ API)
+├── config.py            # YAML config loader with validation
+├── config.yaml          # All settings in one place
+├── requirements.txt     # Python dependencies
+├── download_models.py   # One-time model file downloader
+│
+└── models/
+    ├── face_landmarker.task
+    └── hand_landmarker.task
+```
+
+---
+
+##  Getting Started
+
+### 1. Clone the repository
+```bash
+git clone https://github.com/sca7r/hand-and-face-tracking-with-sleep-awake-detection.git
+cd hand-and-face-tracking-with-sleep-awake-detection
+```
+
+### 2. Create and activate a virtual environment
 ```bash
 python3 -m venv venv
 source venv/bin/activate        # macOS / Linux
 venv\Scripts\activate           # Windows
+```
 
+### 3. Install dependencies
+```bash
 pip install -r requirements.txt
 ```
-## Run the script 
 
+
+### 4. Run
 ```bash
 python main.py
 ```
+
+Open `http://localhost:8000` in your browser to see the live dashboard.
+
+Press **`q`** in the OpenCV window to quit.
+
+---
+
+##  Configuration
+
+All settings are in `config.yaml`. Edit it once — no code changes needed.
+
+
+---
+
+##  Setting Up Email Alerts (Gmail)
+
+1. Enable **2-Step Verification** on your Google account
+2. Go to [Google App Passwords](https://myaccount.google.com/apppasswords)
+3. Generate a new App Password and paste it as `email.password` in `config.yaml`
+4. Set `email.enabled: true`
+
+> ⚠️ Never commit your real password to Git. Use environment variables or a `.env` file for production.
+
+---
+
+##  Setting Up SMS Alerts (Twilio)
+
+1. Create a free account at [twilio.com](https://www.twilio.com)
+2. Get your **Account SID**, **Auth Token**, and a **Twilio phone number**
+3. Fill in the `sms` section in `config.yaml`
+4. Set `sms.enabled: true`
+
+---
+
+##  CLI Options
+
+```bash
+python main.py                        # uses config.yaml (default)
+python main.py --config my.yaml       # use a custom config file
+python main.py --no-api               # detection only, no web dashboard
+```
+
+---
+
+##  Dependencies
+
+| Package | Purpose |
+|---|---|
+| `opencv-python` | Camera capture and frame rendering |
+| `mediapipe>=0.10` | Face and hand landmark detection (Tasks API) |
+| `numpy` | Numerical operations and array drawing |
+| `scipy` | Euclidean distance for EAR calculation |
+| `pygame` | Audio alarm generation |
+| `pyyaml` | Config file parsing |
+| `fastapi` | Web dashboard API |
+| `uvicorn` | ASGI server for FastAPI |
+| `twilio` | SMS alerts (optional) |
+
+---
+
+##  License
+
+This project is open source under the [MIT License](LICENSE).
+
+---

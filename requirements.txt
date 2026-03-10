@@ -1,5 +1,18 @@
+# Core
 opencv-python
-mediapipe==0.10.14
+mediapipe>=0.10.14
 numpy
 scipy
+
+# Audio alarm
 pygame
+
+# Config
+pyyaml
+
+# Web API
+fastapi
+uvicorn[standard]
+
+# SMS alerts (optional — only needed if sms.enabled: true in config.yaml)
+twilio

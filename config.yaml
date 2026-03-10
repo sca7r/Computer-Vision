@@ -1,0 +1,51 @@
+# ══════════════════════════════════════════════════════
+# Monitoring System — Configuration
+# ══════════════════════════════════════════════════════
+
+camera:
+  index: 0
+  width: 640
+  height: 480
+  buffer_size: 1
+
+detection:
+  ear_threshold: 0.25       # EAR below this = eyes closed
+  consec_frames: 20         # frames below threshold before SLEEPING
+  max_faces: 4              # max simultaneous faces tracked
+  no_hands: false           # set true to disable hand tracking
+
+performance:
+  fps: 30                   # target FPS cap
+  max_retries: 30           # consecutive failed reads before exit
+
+models:
+  face: models/face_landmarker.task
+  hand: models/hand_landmarker.task
+
+alarm:
+  enabled: true
+  cooldown: 0.7             # seconds between beep re-triggers
+
+email:
+  enabled: true
+  smtp_host: smtp.gmail.com
+  smtp_port: 587
+  sender: your mail @gmail.com
+  password: password   # use a Gmail App Password
+  recipients:
+    - recipient@gmail.com
+  cooldown: 60.0            # seconds between email re-sends
+
+sms:
+  enabled: false
+  twilio_sid: YOUR_TWILIO_ACCOUNT_SID
+  twilio_token: YOUR_TWILIO_AUTH_TOKEN
+  from_number: "+1234567890"
+  to_numbers:
+    - "+0987654321"
+  cooldown: 60.0
+
+api:
+  enabled: true
+  host: 0.0.0.0
+  port: 8000
