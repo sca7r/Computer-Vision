@@ -1,4 +1,4 @@
-# Hand and face Monitoring System
+# Computer Vision & Monitoring System 
 
 > Real-time drowsiness detection with hand & face tracking, audio alarm, email/SMS alerts, and a live web dashboard, built with Python, MediaPipe Tasks API, and FastAPI.
 
