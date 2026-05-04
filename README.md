@@ -39,6 +39,8 @@ The web dashboard runs at `http://localhost:8000` and shows:
 - **Per-face table** with EAR value, AWAKE/SLEEPING badge, and blink(times asleep) counter
 - **Alert log** with timestamps for every sleep, email, and SMS event
 
+![Dashboard Screenshot](./assets/dash.png)
+
 ---
 
 ## How It Works
@@ -79,7 +81,7 @@ The demo highlights:
 
 <video src="./assets/cv.mp4?raw=true" controls width="720"></video>
 
-[Watch the demo video](https://github.com/sca7r/hComputer-Vision/raw/main/assets/cv.mp4)
+[Watch the demo video](https://github.com/sca7r/Computer-Vision/raw/main/assets/cv.mp4)
 
 
 ---
