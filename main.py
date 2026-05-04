@@ -5,9 +5,9 @@ Entry point.  Starts the detection loop and optionally the FastAPI server.
 
 Usage
 -----
-    python main.py                    # uses config.yaml
-    python main.py --config my.yaml   # custom config file
-    python main.py --no-api           # detection only, no web UI
+    python3 main.py                    # uses config.yaml
+    python3 main.py --config my.yaml   # custom config file
+    python3 main.py --no-api           # detection only, no web UI
 """
 
 import argparse
@@ -25,9 +25,9 @@ import mediapipe as mp
 from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
 
-from config import load_config
-from state  import state, FaceInfo
-from alerts import EmailAlerter, SMSAlerter
+from src.alerts import EmailAlerter, SMSAlerter
+from src.config import load_config
+from src.state import FaceInfo, state
 
 cv2.setUseOptimized(True)
 cv2.setNumThreads(4)
@@ -144,7 +144,7 @@ def draw_hands(frame, result, w: int, h: int):
 def start_api(host: str, port: int):
     try:
         import uvicorn
-        from api import app
+        from src.api import app
         uvicorn.run(app, host=host, port=port, log_level="warning")
     except ImportError:
         print("[ERROR] uvicorn/fastapi not installed — API disabled.")
@@ -169,7 +169,7 @@ def run_detection(cfg, alarm, email_alerter, sms_alerter):
         print("\n[ERROR] Missing model files:")
         for f in missing:
             print(f"  {f}")
-        print("\n  Run:  python download_models.py\n")
+        print("\n  Run:  python3 download_models.py\n")
         sys.exit(1)
 
     face_landmarker = vision.FaceLandmarker.create_from_options(

@@ -5,7 +5,7 @@ import time
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse, JSONResponse, StreamingResponse
 
-from state import state
+from .state import state
 
 app = FastAPI(title=" Monitoring System", docs_url="/docs")
 

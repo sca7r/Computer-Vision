@@ -9,7 +9,7 @@ from email.mime.text import MIMEText
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from config import EmailConfig, SMSConfig
+    from .config import EmailConfig, SMSConfig
 
 
 # ══════════════════════════════════════════════════════════════════════════════

@@ -65,19 +65,42 @@ SharedState (thread-safe)
 
 ---
 
+## Demo
+
+GitHub supports uploaded `.mp4`, `.mov`, and `.webm` files in Markdown comments and repository pages. For best browser compatibility, export the demo as a small H.264 `.mp4`.
+
+Recommended flow:
+
+1. Record a short 20-40 second clip showing the webcam overlay and the dashboard at `http://localhost:8000`.
+2. Compress it if needed:
+```bash
+ffmpeg -i demo-recording.mp4 -vcodec libx264 -crf 28 -preset medium -acodec aac assets/demo.mp4
+```
+3. Add the video to this section:
+```html
+<video src="assets/demo.mp4" controls width="720"></video>
+```
+
+If GitHub does not render the local video in the README for your account/browser, upload the clip by dragging it into a GitHub issue or pull request comment, copy the generated URL, and paste that URL here instead.
+
+---
+
 ## Project Structure
 
 ```
 hand and face tracking with leep awake detection/
 │
 ├── main.py              # Entry point — detection loop
-├── api.py               # FastAPI server + web dashboard
-├── alerts.py            # Email and SMS alerters
-├── state.py             # Thread-safe shared state (detection ↔ API)
-├── config.py            # YAML config loader with validation
 ├── config.yaml          # All settings in one place
 ├── requirements.txt     # Python dependencies
 ├── download_models.py   # One-time model file downloader
+├── assets/              # Demo media for GitHub README
+│
+├── src/
+│   ├── api.py           # FastAPI server + web dashboard
+│   ├── alerts.py        # Email and SMS alerters
+│   ├── config.py        # YAML config loader with validation
+│   └── state.py         # Thread-safe shared state (detection ↔ API)
 │
 └── models/
     ├── face_landmarker.task
@@ -106,10 +129,14 @@ venv\Scripts\activate           # Windows
 pip install -r requirements.txt
 ```
 
-
-### 4. Run
+### 4. Download model files
 ```bash
-python main.py
+python3 download_models.py
+```
+
+### 5. Run
+```bash
+python3 main.py
 ```
 
 Open `http://localhost:8000` in your browser to see the live dashboard.
@@ -148,9 +175,9 @@ All settings are in `config.yaml`. Edit it once — no code changes needed.
 ##  CLI Options
 
 ```bash
-python main.py                        # uses config.yaml (default)
-python main.py --config my.yaml       # use a custom config file
-python main.py --no-api               # detection only, no web dashboard
+python3 main.py                        # uses config.yaml (default)
+python3 main.py --config my.yaml       # use a custom config file
+python3 main.py --no-api               # detection only, no web dashboard
 ```
 
 ---

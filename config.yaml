@@ -27,7 +27,7 @@ alarm:
   cooldown: 0.7             # seconds between beep re-triggers
 
 email:
-  enabled: true
+  enabled: false
   smtp_host: smtp.gmail.com
   smtp_port: 587
   sender: your mail @gmail.com
