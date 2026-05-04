@@ -79,7 +79,7 @@ The demo highlights:
 - Awake vs sleeping status updates
 - Sound alert when prolonged eye closure is detected
 
-<video src="./assets/cv.mp4" controls width="720"></video>
+**[▶ Watch the demo video](./assets/cv.mp4)**
 
 
 ---
