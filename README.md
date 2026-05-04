@@ -79,7 +79,7 @@ The demo highlights:
 
 <video src="./assets/cv.mp4" controls width="720"></video>
 
-[Watch the demo video](https://github.com/sca7r/hand-and-face-tracking-with-sleep-awake-detection/raw/main/assets/cv.mp4)
+[Watch the demo video](https://github.com/sca7r/hComputer-Vision/raw/main/assets/cv.mp4)
 
 
 ---
