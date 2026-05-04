@@ -67,21 +67,19 @@ SharedState (thread-safe)
 
 ## Demo
 
-GitHub supports uploaded `.mp4`, `.mov`, and `.webm` files in Markdown comments and repository pages. For best browser compatibility, export the demo as a small H.264 `.mp4`.
+This demo shows the system running in a car-like driver monitoring setup. A camera is positioned to observe the driver seat while the application tracks both facial landmarks and hand landmarks in real time.
 
-Recommended flow:
+The sleep/awake detection is based on the Eye Aspect Ratio (EAR) algorithm. When the driver’s eyes remain closed for more than 2 seconds, the system marks the driver as sleeping and triggers an audio alert to get their attention.
 
-1. Record a short 20-40 second clip showing the webcam overlay and the dashboard at `http://localhost:8000`.
-2. Compress it if needed:
-```bash
-ffmpeg -i demo-recording.mp4 -vcodec libx264 -crf 28 -preset medium -acodec aac assets/demo.mp4
-```
-3. Add the video to this section:
+The demo highlights:
+- Real-time face and hand tracking
+- EAR-based drowsiness detection
+- Awake vs sleeping status updates
+- Sound alert when prolonged eye closure is detected
+
 ```html
-<video src="assets/demo.mp4" controls width="720"></video>
+<video src="assets/cv.mp4" controls width="720"></video>
 ```
-
-If GitHub does not render the local video in the README for your account/browser, upload the clip by dragging it into a GitHub issue or pull request comment, copy the generated URL, and paste that URL here instead.
 
 ---
 
