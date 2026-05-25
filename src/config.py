@@ -25,7 +25,7 @@ class CameraConfig:
 class DetectionConfig:
     ear_threshold: float = 0.25
     consec_frames: int   = 20
-    max_faces: int       = 4
+    max_faces: int       = 6
     no_hands: bool       = False
 
 @dataclass
